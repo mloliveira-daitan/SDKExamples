@@ -9,7 +9,7 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>  
  
-<!-- 	<servlet>
+ 	<servlet>
 	   <servlet-name>HelloFlipper</servlet-name>
 	   <servlet-class>com.bandwidth.sdk.examples.HelloFlipperServlet</servlet-class>
 	</servlet>
@@ -18,6 +18,6 @@
 	   <servlet-name>HelloFlipper</servlet-name>
 	   <url-pattern>/helloflipper</url-pattern>
 	</servlet-mapping>
--->
+
 
 </web-app>
