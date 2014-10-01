@@ -156,18 +156,14 @@ public class HelloFlipperServlet extends HttpServlet {
 			String requestUrl = req.getRequestURL().toString();
 			String requestUri = req.getRequestURI();
 			String contextPath = req.getContextPath();
+			callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
+			String baseUrl = requestUrl.substring(0, requestUrl.length()
+					- requestUri.length()) + contextPath;
 
 			logger.finer("requestUrl:" + requestUrl);
 			logger.finer("requestUri:" + requestUri);
 			logger.finer("contextPath:" + contextPath);
-
-			callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
-															// calls
 			logger.finer("callbackUrl:" + callbackUrl);
-
-			String baseUrl = requestUrl.substring(0, requestUrl.length()
-					- requestUri.length()) + contextPath;
-			
 			logger.finer("baseUrl:" + baseUrl);
 
 			String fromNumber = req.getParameter("fromNumber");
