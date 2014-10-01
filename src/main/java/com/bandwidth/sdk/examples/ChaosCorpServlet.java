@@ -74,9 +74,6 @@ public class ChaosCorpServlet extends HttpServlet {
 	public static String THREE = "3";
 	public static String FOUR = "4";
 
-
-	private String callbackUrl;
-
 	private ChaosCorpEventHandler eventHandler;
 
 	// The number of worker threads
@@ -149,23 +146,19 @@ public class ChaosCorpServlet extends HttpServlet {
 			logger.finest(body);
 			Event event = (Event) BaseEvent.createEventFromString(body);
 
-			String callLeg = req.getParameter("callLeg");
 			String requestUrl = req.getRequestURL().toString();
 			String requestUri = req.getRequestURI();
 			String contextPath = req.getContextPath();
-			callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
 			String baseUrl = requestUrl.substring(0, requestUrl.length()
-					- requestUri.length()) + contextPath;
+				- requestUri.length()) + contextPath;
 
 			logger.finer("requestUrl:" + requestUrl);
 			logger.finer("requestUri:" + requestUri);
 			logger.finer("contextPath:" + contextPath);
-			logger.finer("callbackUrl:" + callbackUrl);
 			logger.finer("baseUrl:" + baseUrl);
 
 			String fromNumber = req.getParameter("fromNumber");
 			event.setProperty("fromNumber", fromNumber);
-			event.setProperty("callLeg", callLeg);
 			event.setProperty("baseUrl", baseUrl);
 
 			logger.fine("adding event to queue");
@@ -191,7 +184,6 @@ public class ChaosCorpServlet extends HttpServlet {
 			throws ServletException, IOException {
 		logger.finer("doGet(ENTRY)");
 		
-		String callLeg = req.getParameter("callLeg");
 		String requestUrl = req.getRequestURL().toString();
 		String requestUri = req.getRequestURI();
 		String contextPath = req.getContextPath();
@@ -202,11 +194,6 @@ public class ChaosCorpServlet extends HttpServlet {
 		
 		String baseUrl = requestUrl.substring(0, requestUrl.length()
 				- requestUri.length());
-
-
-		callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
-														// calls
-		logger.finer("callbackUrl:" + callbackUrl);
 		
 		logger.finer("baseUrl:" + baseUrl);
 
@@ -370,47 +357,40 @@ public class ChaosCorpServlet extends HttpServlet {
 		}
 
 		/**
-		 * Handles answer event. Distinguishes between incoming callLeg and
-		 * outgoing callLeg
+		 * Handles answer event. 
 		 * 
 		 */
 		public void processEvent(AnswerEvent event) {
 			logger.finer("processAnswerEvent(ENTRY)");
 
-			String callLeg = event.getProperty("callLeg");
-
-			logger.finer("callLeg:" + callLeg);
-
-			if ("incoming".equalsIgnoreCase(callLeg)) {
-
+			try {
+				logger.finer("creating call");
+				
 				String callId = event.getProperty("callId");
+				Call call = Call.createCall(callId);
 
-				try {
-					logger.finer("creating call");
-					Call call = Call.createCall(callId);
+				HashMap <String, Object>gatherParams = new HashMap<String, Object>();
+				HashMap <String, Object>promptParams = new HashMap<String, Object>();
+				
+				gatherParams.put("maxDigits", "1"); //
+				gatherParams.put("interDigitTimeout", "8"); //
+				gatherParams.put("tag", MAIN_MENU_TAG); //
 
-					HashMap <String, Object>gatherParams = new HashMap<String, Object>();
-					HashMap <String, Object>promptParams = new HashMap<String, Object>();
-					
-					gatherParams.put("maxDigits", "1"); //
-					gatherParams.put("interDigitTimeout", "8"); //
-					gatherParams.put("tag", MAIN_MENU_TAG); //
-
-					promptParams.put("sentence", "Press 1 for a song, press 2 to record, press 3 to make a call, press 4 to send a text"); //
-					promptParams.put("gender", "female"); //
-					promptParams.put("locale", "en_uk"); //
-					//gatherParams.put("fileUrl", ""); //
-					promptParams.put("bargeable", "true"); //
-					
-					
-					logger.finer("create gather, play top menu 1");
-					call.createGather(gatherParams, promptParams);
-					
-				} catch (IOException e) {
-					logger.severe(e.toString());
-					e.printStackTrace();
-				}
-			} 
+				promptParams.put("sentence", "Press 1 for a song, press 2 to record, press 3 to make a call, press 4 to send a text"); //
+				promptParams.put("gender", "female"); //
+				promptParams.put("locale", "en_uk"); //
+				//gatherParams.put("fileUrl", ""); //
+				promptParams.put("bargeable", "true"); //
+				
+				logger.finer("create gather, play top menu 1");
+				call.createGather(gatherParams, promptParams);
+				
+			} catch (IOException e) {
+				logger.severe(e.toString());
+				e.printStackTrace();
+			}
+			 
+			logger.finer("processAnswerEvent(EXIT)");
 		}
 
 		/**
