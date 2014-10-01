@@ -24,7 +24,9 @@ import java.io.InputStreamReader;
 
 import java.util.HashMap;
 
-import com.bandwidth.sdk.BandwidthRestClient;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.bandwidth.sdk.model.*;
 
 /**
@@ -369,8 +371,12 @@ public class ChaosCorpServlet extends HttpServlet {
 				String callId = event.getProperty("callId");
 				Call call = Call.createCall(callId);
 
-				HashMap <String, Object>gatherParams = new HashMap<String, Object>();
-				HashMap <String, Object>promptParams = new HashMap<String, Object>();
+				//HashMap <String, Object>gatherParams = new HashMap<String, Object>();
+				//HashMap <String, Object>promptParams = new HashMap<String, Object>();
+				
+				JSONObject gatherParams = new JSONObject();
+				JSONObject promptParams = new JSONObject();
+
 				
 				gatherParams.put("maxDigits", "1"); //
 				gatherParams.put("interDigitTimeout", "8"); //
@@ -378,7 +384,8 @@ public class ChaosCorpServlet extends HttpServlet {
 
 				promptParams.put("sentence", "Press 1 for a song, press 2 to record, press 3 to make a call, press 4 to send a text"); //
 				promptParams.put("gender", "female"); //
-				promptParams.put("locale", "en_UK"); //
+				promptParams.put("voice", "kate");
+				promptParams.put("locale", "en_US"); //
 				//gatherParams.put("fileUrl", ""); //
 				promptParams.put("bargeable", "true"); //
 				
