@@ -18,6 +18,17 @@
 	   <servlet-name>HelloFlipper</servlet-name>
 	   <url-pattern>/helloflipper</url-pattern>
 	</servlet-mapping>
+	
+ 	<servlet>
+	   <servlet-name>ChaosCorp</servlet-name>
+	   <servlet-class>com.bandwidth.sdk.examples.ChaosCorpServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	   <servlet-name>ChaosCorp</servlet-name>
+	   <url-pattern>/chaoscorp</url-pattern>
+	</servlet-mapping>
+	
 
 
 </web-app>
