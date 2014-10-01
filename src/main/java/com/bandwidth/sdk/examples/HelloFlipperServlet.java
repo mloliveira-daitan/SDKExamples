@@ -146,7 +146,7 @@ public class HelloFlipperServlet extends HttpServlet {
 			logger.finer("callbackUrl:" + callbackUrl);
 
 			String baseUrl = requestUrl.substring(0, requestUrl.length()
-					- requestUri.length());
+					- requestUri.length()) + contextPath;
 			
 			logger.finer("baseUrl:" + baseUrl);
 
