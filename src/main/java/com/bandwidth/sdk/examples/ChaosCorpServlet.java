@@ -378,7 +378,7 @@ public class ChaosCorpServlet extends HttpServlet {
 
 				promptParams.put("sentence", "Press 1 for a song, press 2 to record, press 3 to make a call, press 4 to send a text"); //
 				promptParams.put("gender", "female"); //
-				promptParams.put("locale", "en_uk"); //
+				promptParams.put("locale", "en_UK"); //
 				//gatherParams.put("fileUrl", ""); //
 				promptParams.put("bargeable", "true"); //
 				
