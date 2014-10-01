@@ -114,6 +114,8 @@ public class HelloFlipperServlet extends HttpServlet {
 			this.outgoingNumber = outgoingNumber;
 		}
 		
+		logger.fine("outgoingNumber:" + this.outgoingNumber);
+		
 		
 
 		logger.finer("init(EXIT)");
