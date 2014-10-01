@@ -58,9 +58,9 @@ public class HelloFlipperServlet extends HttpServlet {
 			}
 		});
 		// change the log level here
-		consoleHandler.setLevel(Level.FINER);
+		consoleHandler.setLevel(Level.FINEST);
 		// and here
-		logger.setLevel(Level.FINER);
+		logger.setLevel(Level.FINEST);
 
 		logger.addHandler(consoleHandler);
 	}
@@ -119,16 +119,20 @@ public class HelloFlipperServlet extends HttpServlet {
 			String callLeg = req.getParameter("callLeg");
 			String requestUrl = req.getRequestURL().toString();
 			String requestUri = req.getRequestURI();
+			String contextPath = req.getContextPath();
 
-			logger.finest("requestUrl:" + requestUrl);
-			logger.finest("requestUri:" + requestUri);
+			logger.finer("requestUrl:" + requestUrl);
+			logger.finer("requestUri:" + requestUri);
+			logger.finer("contextPath:" + contextPath);
 
 			callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
 															// calls
-			logger.finest("callbackUrl:" + callbackUrl);
+			logger.finer("callbackUrl:" + callbackUrl);
 
 			String baseUrl = requestUrl.substring(0, requestUrl.length()
 					- requestUri.length());
+			
+			logger.finer("baseUrl:" + baseUrl);
 
 			String fromNumber = req.getParameter("fromNumber");
 			event.setProperty("fromNumber", fromNumber);
@@ -157,6 +161,26 @@ public class HelloFlipperServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		logger.finer("doGet(ENTRY)");
+		
+		String callLeg = req.getParameter("callLeg");
+		String requestUrl = req.getRequestURL().toString();
+		String requestUri = req.getRequestURI();
+		String contextPath = req.getContextPath();
+
+		logger.finer("requestUrl:" + requestUrl);
+		logger.finer("requestUri:" + requestUri);
+		logger.finer("contextPath:" + contextPath);
+		
+		String baseUrl = requestUrl.substring(0, requestUrl.length()
+				- requestUri.length());
+
+
+		callbackUrl = requestUrl + "?callLeg=outgoing"; // used for outgoing
+														// calls
+		logger.finer("callbackUrl:" + callbackUrl);
+		
+		logger.finer("baseUrl:" + baseUrl);
+
 
 		logger.finer("doGet(EXIT)");
 	}
