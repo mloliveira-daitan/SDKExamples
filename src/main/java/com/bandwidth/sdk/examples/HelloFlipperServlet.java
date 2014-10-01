@@ -8,7 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,10 +24,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import com.bandwidth.sdk.BandwidthRestClient;
-import com.bandwidth.sdk.model.Call;
-import com.bandwidth.sdk.model.Bridge;
-import com.bandwidth.sdk.model.Event;
-import com.bandwidth.sdk.model.BaseEvent;
 import com.bandwidth.sdk.model.*;
 
 /**
@@ -73,6 +71,7 @@ public class HelloFlipperServlet extends HttpServlet {
 
 	// The number of worker threads
 	private static int NUMWORKERS = 1;
+	private ArrayList<Thread> workerThreads;
 
 	// The concurrent blocking queue allows worker threads to respond to the
 	// requests
@@ -88,15 +87,32 @@ public class HelloFlipperServlet extends HttpServlet {
 	@Override
 	public void init() {
 		logger.finer("init(ENTRY)");
+		
+		workerThreads = new ArrayList<Thread>();
 
 		// start the worker threads
 		for (int i = 0; i < NUMWORKERS; i++) {
-			(new Thread(new EventWorker(queue))).start();
+			
+			Thread thread = new Thread(new EventWorker(queue));
+			thread.start();
+			
+			workerThreads.add(thread);
 		}
 
 		eventHandler = new EventHandler();
 
 		logger.finer("init(EXIT)");
+	}
+	
+	/**
+	 * Clean up the threads
+	 */
+	public void destroy() {
+		
+		// clean up nicely
+		for (Thread thread : workerThreads) {
+			thread.interrupted();
+		}
 	}
 
 	/**
@@ -307,6 +323,8 @@ public class HelloFlipperServlet extends HttpServlet {
 				catch (InterruptedException e) {
 					logger.severe(e.getMessage());
 					e.printStackTrace();
+					Thread.currentThread().interrupt();
+					break;
 				}
 
 			} // while
