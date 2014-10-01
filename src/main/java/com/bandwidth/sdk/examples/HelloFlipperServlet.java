@@ -62,8 +62,8 @@ public class HelloFlipperServlet extends HttpServlet {
 
 		logger.addHandler(consoleHandler);
 	}
-
-	private BandwidthRestClient bwclient;
+	
+	private static String OUTGOING_NUMBER = "BANDWIDTH_APPPLATFORM_OUTGOING_NUMBER";
 
 	private String callbackUrl;
 
@@ -72,6 +72,13 @@ public class HelloFlipperServlet extends HttpServlet {
 	// The number of worker threads
 	private static int NUMWORKERS = 1;
 	private ArrayList<Thread> workerThreads;
+	
+	// edit this to your phone number. 
+	// //This would be replaced by a db to lookup give a from number
+	// Alternatively you can set this in the environment variable
+	// BANDWIDTH_APPPLATFORM_OUTGOING_NUMBER
+	private String outgoingNumber; 
+	
 
 	// The concurrent blocking queue allows worker threads to respond to the
 	// requests
@@ -100,6 +107,14 @@ public class HelloFlipperServlet extends HttpServlet {
 		}
 
 		eventHandler = new EventHandler();
+		
+		String outgoingNumber = System.getProperty(OUTGOING_NUMBER);
+		
+		if (outgoingNumber != null && outgoingNumber.length() > 0) {
+			this.outgoingNumber = outgoingNumber;
+		}
+		
+		
 
 		logger.finer("init(EXIT)");
 	}
@@ -447,7 +462,7 @@ public class HelloFlipperServlet extends HttpServlet {
 						HashMap<String, Object> params = new HashMap<String, Object>();
 						params.put("tag", callId);
 
-						Call call2 = Call.makeCall("3032288849", call1.getTo(),
+						Call call2 = Call.makeCall(outgoingNumber, call1.getTo(),
 								callbackUrl + "&fromNumber=" + callId, params);
 
 						// will whisper to the outgoing call when they answer
