@@ -11,6 +11,7 @@ import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -107,8 +108,10 @@ public class HelloFlipperServlet extends HttpServlet {
 		}
 
 		eventHandler = new EventHandler();
+				
+		Map<String, String> env = System.getenv();
 		
-		String outgoingNumber = System.getProperty(OUTGOING_NUMBER);
+		String outgoingNumber = env.get(OUTGOING_NUMBER);
 		
 		if (outgoingNumber != null && outgoingNumber.length() > 0) {
 			this.outgoingNumber = outgoingNumber;
