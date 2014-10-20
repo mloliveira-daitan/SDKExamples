@@ -146,7 +146,7 @@ public class ChaosCorpServlet extends HttpServlet {
 		try {
 			String body = getBody(req);
 			logger.finest(body);
-			Event event = (Event) BaseEvent.createEventFromString(body);
+			Event event = (Event) EventBase.createEventFromString(body);
 
 			String requestUrl = req.getRequestURL().toString();
 			String requestUri = req.getRequestURI();
@@ -369,11 +369,12 @@ public class ChaosCorpServlet extends HttpServlet {
 				logger.finer("creating call");
 				
 				String callId = event.getProperty("callId");
-				Call call = Call.createCall(callId);
+				Call call = Call.get(callId);
 
 				//HashMap <String, Object>gatherParams = new HashMap<String, Object>();
 				//HashMap <String, Object>promptParams = new HashMap<String, Object>();
 				
+				// fix this, no external json!!!
 				JSONObject gatherParams = new JSONObject();
 				JSONObject promptParams = new JSONObject();
 
@@ -392,7 +393,7 @@ public class ChaosCorpServlet extends HttpServlet {
 				logger.finer("create gather, play top menu 1");
 				call.createGather(gatherParams, promptParams);
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.severe(e.toString());
 				e.printStackTrace();
 			}
@@ -443,7 +444,7 @@ public class ChaosCorpServlet extends HttpServlet {
 				logger.finer("digits:" + digits);
 				logger.finer("callId:" + callId);
 
-				Call call = Call.createCall(callId);
+				Call call = Call.get(callId);
 
 				if ("inter-digit-timeout".equalsIgnoreCase(reason)) {
 
@@ -466,7 +467,7 @@ public class ChaosCorpServlet extends HttpServlet {
 					}
 						
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.severe(e.toString());
 				e.printStackTrace();
 			}

@@ -150,7 +150,7 @@ public class HelloFlipperServlet extends HttpServlet {
 		try {
 			String body = getBody(req);
 			logger.finest(body);
-			Event event = (Event) BaseEvent.createEventFromString(body);
+			Event event = (Event) EventBase.createEventFromString(body);
 
 			String callLeg = req.getParameter("callLeg");
 			String requestUrl = req.getRequestURL().toString();
@@ -390,7 +390,7 @@ public class HelloFlipperServlet extends HttpServlet {
 
 				try {
 					logger.finer("creating call");
-					Call call = Call.createCall(callId);
+					Call call = Call.get(callId);
 
 					logger.finer("speaking sentence");
 					call.speakSentence("Hello Flipper");
@@ -400,8 +400,8 @@ public class HelloFlipperServlet extends HttpServlet {
 							+ "/dolphin.mp3");
 
 					// logger.finer("create gather");
-					call.createGather("Press 1 to connect with your fish. Press 2 to let the fish go");
-				} catch (IOException e) {
+					call.createGather("Press 1 to connect with your fish. Press 2 to let it go");
+				} catch (Exception e) {
 					logger.severe(e.toString());
 					e.printStackTrace();
 				}
@@ -415,14 +415,14 @@ public class HelloFlipperServlet extends HttpServlet {
 				logger.fine("incomingCallId:" + incomingCallId);
 
 				try {
-					Call call1 = Call.createCall(incomingCallId);
+					Call call1 = Call.get(incomingCallId);
 
-					Call call2 = Call.createCall(outgoingCallId);
+					Call call2 = Call.get(outgoingCallId);
 					call2.speakSentence(
-							"You have a dolphin on the line. He wants to eat you!",
+							"You have a dolphin on the line. Watch out, he's hungry!",
 							"whisper-to-the-fish");
 
-				} catch (IOException e) {
+				} catch (Exception e) {
 					logger.severe(e.toString());
 					e.printStackTrace();
 				}
@@ -448,33 +448,30 @@ public class HelloFlipperServlet extends HttpServlet {
 			try {
 
 				if ("inter-digit-timeout".equalsIgnoreCase(reason)) {
-					Call call = Call.createCall(callId);
+					Call call = Call.get(callId);
 
 					call.createGather("I'm sorry, I didn't get your response. Please enter 1 to speak to the fish. Enter 2 to say goodbye to flipper");
 				} else {
 					if ("1".equals(digits)) {
-						Call call1 = Call.createCall(callId);
+						Call call1 = Call.get(callId);
 
 						logger.fine("Got a 1 - speaking sentence....");
 						call1.speakSentence("We're connecting you to your fish");
 
 						logger.finer("making outgoing call:" + callbackUrl);
-
-						HashMap<String, Object> params = new HashMap<String, Object>();
-						params.put("tag", callId);
-
-						Call call2 = Call.makeCall(outgoingNumber, call1.getTo(),
-								callbackUrl + "&fromNumber=" + callId, params);
+						
+						Call call2 = Call.create(outgoingNumber, call1.getTo(),
+								callbackUrl + "&fromNumber=" + callId, callId);
 
 						// will whisper to the outgoing call when they answer
 					} else if ("2".equals(digits)) {
-						Call call = Call.createCall(callId);
+						Call call = Call.get(callId);
 						call.speakSentence("Bye bye flipper!");
 
 						call.hangUp();
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				logger.severe(e.toString());
 				e.printStackTrace();
 			}
@@ -500,15 +497,15 @@ public class HelloFlipperServlet extends HttpServlet {
 					String callId1 = event.getProperty("callId");
 					logger.finer("callId1:" + callId1);
 
-					Call call1 = Call.createCall(callId1);
+					Call call1 = Call.get(callId1);
 
 					String callId2 = event.getProperty("fromNumber");
 					logger.finer("callId2:" + callId2);
 
-					Call call2 = Call.createCall(callId2);
+					Call call2 = Call.get(callId2);
 
-					Bridge.createBridge(call1, call2);
-				} catch (IOException e) {
+					Bridge.create(call1, call2);
+				} catch (Exception e) {
 					// TODO - need to actually handle the errors.
 					logger.severe(e.getMessage());
 					e.printStackTrace();
