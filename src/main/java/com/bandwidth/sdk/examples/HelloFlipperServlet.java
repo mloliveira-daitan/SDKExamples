@@ -79,7 +79,7 @@ public class HelloFlipperServlet extends HttpServlet {
 		logger.addHandler(consoleHandler);
 	}
 	
-	private static String OUTGOING_NUMBER = "BANDWIDTH_APPPLATFORM_OUTGOING_NUMBER";
+	private static String OUTGOING_NUMBER = "BANDWIDTH_OUTGOING_NUMBER";
 
 	private String callbackUrl;
 
