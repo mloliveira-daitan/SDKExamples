@@ -159,8 +159,8 @@ public class HelloFlipperServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		logger.finer("doPost(ENTRY)");
 
-		// displayHeaders(req);
-		// displayParameters(req);
+		 //displayHeaders(req);
+		 //displayParameters(req);
 
 		try {
 			String body = getBody(req);
@@ -408,14 +408,8 @@ public class HelloFlipperServlet extends HttpServlet {
 					Call call = Call.get(callId);
 
 					logger.finer("speaking sentence");
-					call.speakSentence("Hello Flipper");
+					call.speakSentence("Hello Flipper", "hello-flipper");
 
-					// logger.finer("play recording");
-					call.playRecording(event.getProperty("baseUrl")
-							+ "/dolphin.mp3");
-
-					// logger.finer("create gather");
-					call.createGather("Press 1 to connect with your fish. Press 2 to let it go");
 				} catch (Exception e) {
 					logger.severe(e.toString());
 					e.printStackTrace();
@@ -502,15 +496,16 @@ public class HelloFlipperServlet extends HttpServlet {
 
 			String tag = event.getProperty("tag");
 			String status = event.getProperty("status");
+			String callId1 = event.getProperty("callId");
+			logger.finer("callId1:" + callId1);
 
 			logger.finer("tag" + tag);
 
+			
 			if ("whisper-to-the-fish".equalsIgnoreCase(tag)
 					&& "done".equalsIgnoreCase(status)) {
 				try {
 					logger.finer("processing whisper...");
-					String callId1 = event.getProperty("callId");
-					logger.finer("callId1:" + callId1);
 
 					Call call1 = Call.get(callId1);
 
@@ -521,11 +516,25 @@ public class HelloFlipperServlet extends HttpServlet {
 
 					Bridge.create(call1, call2);
 				} catch (Exception e) {
-					// TODO - need to actually handle the errors.
 					logger.severe(e.getMessage());
 					e.printStackTrace();
 				}
 			}
+			else if ("hello-flipper".equalsIgnoreCase(tag) ) {
+				try {
+					
+					logger.finer("play recording");
+					Call call = Call.get(callId1);
+				
+					call.playRecording(event.getProperty("baseUrl") + "/dolphin.mp3");
+				}
+				catch (Exception e) {
+					logger.severe(e.getMessage());
+					e.printStackTrace();
+				}
+
+			}
+
 
 			logger.finer("processSpeakEvent(EXIT)");
 		}
@@ -547,7 +556,21 @@ public class HelloFlipperServlet extends HttpServlet {
 		 */
 		public void processEvent(PlaybackEvent event) {
 			logger.finer("processPlaybackEvent(ENTRY)");
+			
+			
+			String callId = event.getProperty("callId");
+			logger.finer("callId1:" + callId);
 
+			try {
+				Call call = Call.get(callId);
+				// logger.finer("create gather");
+				call.createGather("Press 1 to connect with your fish. Press 2 to let it go");
+			}
+			catch(Exception e) {
+				logger.severe(e.getMessage());
+				e.printStackTrace();
+			}
+			
 			logger.finer("processPlaybackEvent(EXIT)");
 		}
 
