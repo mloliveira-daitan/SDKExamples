@@ -46,6 +46,15 @@ import com.bandwidth.sdk.model.Visitor;
  * This app is an event server for the Bandwidth App Platform SDK It processes
  * events within a jetty web app using the SDK
  * 
+ * The scenario is the following:
+ * 1. Process an incoming call - speak a greeting and play an audio
+ * 2. Process the events from the speak and playback
+ * 3. Create a gather to collect digits. Prompt the caller to enter the digits
+ * 4. Process the digits
+ * 5. Create an outgoing call
+ * 6. Process the outgoing call answer event
+ * 7. Whisper to the whoever answers the outgoing call
+ * 8. Bridge the two calls
  * 
  * 
  */
@@ -126,6 +135,8 @@ public class HelloFlipperServlet extends HttpServlet {
 				
 		Map<String, String> env = System.getenv();
 		
+		// you can set the outgoing number in the environment variable or just hard code it
+		// this checks to see it's in the env var.
 		String outgoingNumber = env.get(OUTGOING_NUMBER);
 		
 		if (outgoingNumber != null && outgoingNumber.length() > 0) {
@@ -133,8 +144,6 @@ public class HelloFlipperServlet extends HttpServlet {
 		}
 		
 		logger.fine("outgoingNumber:" + this.outgoingNumber);
-		
-		
 
 		logger.finer("init(EXIT)");
 	}
@@ -175,11 +184,11 @@ public class HelloFlipperServlet extends HttpServlet {
 			String baseUrl = requestUrl.substring(0, requestUrl.length()
 					- requestUri.length()) + contextPath;
 
-			logger.finer("requestUrl:" + requestUrl);
-			logger.finer("requestUri:" + requestUri);
-			logger.finer("contextPath:" + contextPath);
-			logger.finer("callbackUrl:" + callbackUrl);
-			logger.finer("baseUrl:" + baseUrl);
+			//logger.finer("requestUrl:" + requestUrl);
+			//logger.finer("requestUri:" + requestUri);
+			//logger.finer("contextPath:" + contextPath);
+			//logger.finer("callbackUrl:" + callbackUrl);
+			//logger.finer("baseUrl:" + baseUrl);
 
 			String fromNumber = req.getParameter("fromNumber");
 			event.setProperty("fromNumber", fromNumber);
@@ -471,7 +480,7 @@ public class HelloFlipperServlet extends HttpServlet {
 						logger.finer("making outgoing call:" + callbackUrl);
 						
 						Call call2 = Call.create(outgoingNumber, call1.getTo(),
-								callbackUrl + "?fromNumber=" + callId, callId);
+								callbackUrl + "&fromNumber=" + callId, callId);
 
 						// will whisper to the outgoing call when they answer
 					} else if ("2".equals(digits)) {
