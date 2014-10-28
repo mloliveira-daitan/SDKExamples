@@ -555,7 +555,7 @@ public class HelloFlipperServlet extends HttpServlet {
 		 * Handles playback event
 		 */
 		public void processEvent(PlaybackEvent event) {
-			logger.finer("processPlaybackEvent(ENTRY):" + event);
+			logger.finer("processPlaybackEvent(ENTRY):");
 			
 			
 			String callId = event.getProperty("callId");
