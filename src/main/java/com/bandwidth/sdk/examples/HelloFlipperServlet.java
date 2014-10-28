@@ -430,6 +430,7 @@ public class HelloFlipperServlet extends HttpServlet {
 					call2.speakSentence(
 							"You have a dolphin on the line. Watch out, he's hungry!",
 							"whisper-to-the-fish");
+					Bridge.create(call1, call2);
 
 				} catch (Exception e) {
 					logger.severe(e.toString());
@@ -470,7 +471,7 @@ public class HelloFlipperServlet extends HttpServlet {
 						logger.finer("making outgoing call:" + callbackUrl);
 						
 						Call call2 = Call.create(outgoingNumber, call1.getTo(),
-								callbackUrl + "&fromNumber=" + callId, callId);
+								callbackUrl + "?fromNumber=" + callId, callId);
 
 						// will whisper to the outgoing call when they answer
 					} else if ("2".equals(digits)) {
@@ -514,7 +515,6 @@ public class HelloFlipperServlet extends HttpServlet {
 
 					Call call2 = Call.get(callId2);
 
-					Bridge.create(call1, call2);
 				} catch (Exception e) {
 					logger.severe(e.getMessage());
 					e.printStackTrace();
@@ -555,20 +555,23 @@ public class HelloFlipperServlet extends HttpServlet {
 		 * Handles playback event
 		 */
 		public void processEvent(PlaybackEvent event) {
-			logger.finer("processPlaybackEvent(ENTRY)");
+			logger.finer("processPlaybackEvent(ENTRY):" + event);
 			
 			
 			String callId = event.getProperty("callId");
+			String status = event.getProperty("status");
 			logger.finer("callId1:" + callId);
 
-			try {
-				Call call = Call.get(callId);
-				// logger.finer("create gather");
-				call.createGather("Press 1 to connect with your fish. Press 2 to let it go");
-			}
-			catch(Exception e) {
-				logger.severe(e.getMessage());
-				e.printStackTrace();
+			if ("done".equalsIgnoreCase(status)) {
+				try {
+					Call call = Call.get(callId);
+					// logger.finer("create gather");
+					call.createGather("Press 1 to connect with your fish. Press 2 to let it go");
+				}
+				catch(Exception e) {
+					logger.severe(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 			
 			logger.finer("processPlaybackEvent(EXIT)");
