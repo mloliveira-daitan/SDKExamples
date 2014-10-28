@@ -520,7 +520,7 @@ public class HelloFlipperServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-			else if ("hello-flipper".equalsIgnoreCase(tag) ) {
+			else if ("hello-flipper".equalsIgnoreCase(tag) && "done".equalsIgnoreCase(status) ) {
 				try {
 					
 					logger.finer("play recording");
