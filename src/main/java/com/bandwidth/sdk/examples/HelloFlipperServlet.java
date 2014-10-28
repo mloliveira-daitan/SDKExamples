@@ -427,11 +427,11 @@ public class HelloFlipperServlet extends HttpServlet {
 					Call call1 = Call.get(incomingCallId);
 
 					Call call2 = Call.get(outgoingCallId);
+					
+					// whisper to the outgoing call. Process the bridge in the speakEvent
 					call2.speakSentence(
-							"You have a dolphin on the line. Watch out, he's hungry!",
-							"whisper-to-the-fish");
-					Bridge.create(call1, call2);
-
+							"You have a dolphin on the line. Watch out, he's hungry!", "whisper-to-the-fish");
+					
 				} catch (Exception e) {
 					logger.severe(e.toString());
 					e.printStackTrace();
@@ -514,6 +514,10 @@ public class HelloFlipperServlet extends HttpServlet {
 					logger.finer("callId2:" + callId2);
 
 					Call call2 = Call.get(callId2);
+					
+					logger.finer("Bridging call:" + callId1 + ", " + callId2);
+					
+					Bridge.create(callId1, callId2);
 
 				} catch (Exception e) {
 					logger.severe(e.getMessage());
