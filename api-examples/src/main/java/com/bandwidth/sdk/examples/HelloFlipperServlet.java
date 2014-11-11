@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -22,25 +21,23 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.util.HashMap;
-
 import com.bandwidth.sdk.model.Bridge;
 import com.bandwidth.sdk.model.Call;
-import com.bandwidth.sdk.model.DtmfEvent;
-import com.bandwidth.sdk.model.Event;
-import com.bandwidth.sdk.model.EventType;
-import com.bandwidth.sdk.model.EventBase;
-import com.bandwidth.sdk.model.GatherEvent;
-import com.bandwidth.sdk.model.AnswerEvent;
-import com.bandwidth.sdk.model.HangupEvent;
-import com.bandwidth.sdk.model.IncomingCallEvent;
-import com.bandwidth.sdk.model.PlaybackEvent;
-import com.bandwidth.sdk.model.RejectEvent;
-import com.bandwidth.sdk.model.RecordingEvent;
-import com.bandwidth.sdk.model.SpeakEvent;
-import com.bandwidth.sdk.model.SmsEvent;
-import com.bandwidth.sdk.model.TimeoutEvent;
-import com.bandwidth.sdk.model.Visitor;
+import com.bandwidth.sdk.model.events.DtmfEvent;
+import com.bandwidth.sdk.model.events.Event;
+import com.bandwidth.sdk.model.events.EventType;
+import com.bandwidth.sdk.model.events.EventBase;
+import com.bandwidth.sdk.model.events.GatherEvent;
+import com.bandwidth.sdk.model.events.AnswerEvent;
+import com.bandwidth.sdk.model.events.HangupEvent;
+import com.bandwidth.sdk.model.events.IncomingCallEvent;
+import com.bandwidth.sdk.model.events.PlaybackEvent;
+import com.bandwidth.sdk.model.events.RejectEvent;
+import com.bandwidth.sdk.model.events.RecordingEvent;
+import com.bandwidth.sdk.model.events.SpeakEvent;
+import com.bandwidth.sdk.model.events.SmsEvent;
+import com.bandwidth.sdk.model.events.TimeoutEvent;
+import com.bandwidth.sdk.model.events.Visitor;
 
 /**
  * This app is an event server for the Bandwidth App Platform SDK It processes

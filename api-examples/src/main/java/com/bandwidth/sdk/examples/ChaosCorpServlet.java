@@ -10,8 +10,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,12 +20,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.util.HashMap;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.bandwidth.sdk.model.*;
+import com.bandwidth.sdk.model.events.*;
 
 /**
  * This app is an event server for the Bandwidth App Platform SDK It processes
