@@ -9,8 +9,8 @@
 	<name>Bandwidth SDK examples</name>
 
 	<modules>
-		<module>xml-examples</module>
 		<module>api-examples</module>
+		<!--<module>xml-examples</module>-->
 	</modules>
 
     <repositories>
