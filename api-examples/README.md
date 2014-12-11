@@ -37,25 +37,25 @@ Step 2 - Create a new Heroku app
 
 Step 3 - Configure the new Heroku app with your App Platform credentials
 
-	heroku config:set BANDWIDTH_USER_ID='your user id from the app platform'
-	heroku config:set BANDWIDTH_API_TOKEN='your api token from the app platform'
-	heroku config:set BANDWIDTH_API_SECRET='your api secret from the app platform'
+	heroku config:set BANDWIDTH_USER_ID='your user id from the app platform' --app <heroku app name>
+	heroku config:set BANDWIDTH_API_TOKEN='your api token from the app platform' --app <heroku app name>
+	heroku config:set BANDWIDTH_API_SECRET='your api secret from the app platform' --app <heroku app name>
 
-	heroku config:set BANDWIDTH_OUTGOING_NUMBER='the number you want the example app to call' (you can set this code if you prefer. Setting it here let's you deploy it as is, without changing code.)
+	heroku config:set BANDWIDTH_OUTGOING_NUMBER='the number you want the example app to call' (you can set this code if you prefer. Setting it here let's you deploy it as is, without changing code.) --app <heroku app name>
 
 Note that your Bandwidth user id, api token and api secret are obtained by logging into the app platform UI and going to the Account tab.
 
 Step 4 - Push the project to heroku
 
-	git push heroku master
-	heroku ps:scale web=1
+	mvn clean heroku:deploy-war
+	heroku ps:scale web=1 --app <heroku app name>
 
 You can now verify that the app is 	successfully deployed - 
 	
 	heroku logs -tail --app <heroku-app-name> 
 
 And verify the app is running 
-	heroku 	open
+	heroku 	open --app <heroku app name>
 
 To setup the phone number see the Routing the Phone Number section below.
 
