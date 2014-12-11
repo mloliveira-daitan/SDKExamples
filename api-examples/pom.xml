@@ -58,7 +58,7 @@
                 <artifactId>heroku-maven-plugin</artifactId>
                 <version>0.1.9</version>
                 <configuration>
-                    <appName>safe-woodland-3327</appName>
+                    <appName>${heroku.appName}</appName>
 
                     <processTypes>
                         <web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.bandwidth.sdk.examples.Main</web>

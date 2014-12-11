@@ -47,7 +47,7 @@ Note that your Bandwidth user id, api token and api secret are obtained by loggi
 
 Step 4 - Push the project to heroku
 
-	mvn clean heroku:deploy-war
+	mvn clean heroku:deploy-war -Dheroku.appName=<heroku app name>
 	heroku ps:scale web=1 --app <heroku app name>
 
 You can now verify that the app is 	successfully deployed - 
