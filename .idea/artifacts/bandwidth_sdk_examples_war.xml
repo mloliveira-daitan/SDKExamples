@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="bandwidth-sdk-examples:war">
-    <output-path>$PROJECT_DIR$/api-examples/target</output-path>
-    <root id="archive" name="bandwidth-sdk-examples-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="bandwidth-sdk-examples:war exploded" />
-    </root>
-  </artifact>
-</component>
